@@ -1,5 +1,6 @@
 package com.skip.vanhack.order;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.skip.vanhack.customer.Customer;
 import com.skip.vanhack.product.Product;
 
@@ -21,6 +22,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
+    @JsonIgnore
     @ManyToOne
     private Customer customer;
 
