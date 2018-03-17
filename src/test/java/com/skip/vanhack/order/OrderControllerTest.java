@@ -1,6 +1,5 @@
 package com.skip.vanhack.order;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skip.vanhack.VanhackApplication;
 import com.skip.vanhack.customer.Customer;
 import com.skip.vanhack.customer.CustomerRepository;
@@ -24,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.skip.vanhack.TestUtils.asJsonString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -62,7 +62,9 @@ public class OrderControllerTest {
     public void setup() throws Exception {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-        this.orderRepository.deleteAllInBatch();
+        orderRepository.deleteAllInBatch();
+        productRepository.deleteAllInBatch();
+        customerRepository.deleteAllInBatch();
 
         customer = customerRepository.save(new Customer("Customer Name", "customer@email.com", "customerPassword"));
 
@@ -115,12 +117,4 @@ public class OrderControllerTest {
                 .andExpect(content().string("\"CREATED\""));
     }
 
-    private static String asJsonString(final Object obj) {
-        try {
-            final ObjectMapper mapper = new ObjectMapper();
-            return mapper.writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
